@@ -1,0 +1,56 @@
+﻿# Unity/Tuanjie auto-generated (ProjectSetup.md 5.2)
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+UserSettings/
+MemoryCaptures/
+Recordings/
+Assets/AssetStoreTools*
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets (2.4, not in Git)
+SECRETS/
+*.pem
+*.key
+.env
+
+# Android
+*.keystore
+*.jks
+local.properties
+.gradle/
+
+# iOS
+Podfile.lock
+Pods/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Build artifacts
+*.apk
+*.aab
