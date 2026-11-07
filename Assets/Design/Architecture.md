@@ -2,7 +2,7 @@
 
 | 项目 | 避难防线 - 词汇守卫者 |
 |------|-------------------|
-| 文档版本 | v1.15 |
+| 文档版本 | v1.16 |
 | 最后更新 | 2026-11-07 |
 | 关联文档 | [GDD.MD](./GDD.MD) v2.13、[TechStack.md](./TechStack.md) v1.16、[DevTasks.md](./DevTasks.md) v1.15、[ProjectSetup.md](./ProjectSetup.md) v1.16、[Compliance.md](./Compliance.md) v1.12 |
 | 目标平台 | **Android + iOS 移动 App**（锁横屏；休闲益智类目；**全年龄英语学习**；**国内主市场：版号前灰区内测 → 版号后上市**；**纯广告变现 · 0 内购**；GDD §12 D22）；**不做微信/抖音/团结小游戏** |
@@ -355,7 +355,7 @@ public interface IRewardCalculator {
         int normalKills,
         int eliteKills,
         int bossKills,
-        BattleResult result,       // Victory / Defeat / Quit
+        BattleState result,        // Victory / Defeat / Quit（于战斗结束调用，取此三值）
         int correctAnswers,
         int initialWordPoolCount,
         float durabilityPercent);
@@ -371,6 +371,8 @@ public struct RewardResult {
     public int wrongWordsAdded;
 }
 ```
+
+> **errata（v1.16·主程拍板）**：上方代码块结果参数原写 `BattleResult`，但 §3 从未定义该枚举、§17 v1.11 已定 **`BattleState` 为唯一战斗状态真源**；经主程拍板 Phase 0 复用 `BattleState`（`Calculate` 于战斗结束调用，`result` 取 Victory/Defeat/Quit 子集），**不新增 `BattleResult` 枚举**，其余方法签名不变。
 
 ### 4.7 ISceneLoader
 
@@ -1039,6 +1041,7 @@ Phase 3：支持远程包（若开联网）
 | v1.13 | 2026-11-07 | **字体评审发现基线串同步（仅基线串升版，接口/事件契约零变更）**：评审落地的许可展示页（UI §14）/生僻字后备资产 `ShelterHanFB`/OFL RFN 口径均归 TechStack/Compliance/UI，不涉接口契约（TMP Fallback 资产仍为 view 层）；本文实质未改；基线串升至 GDD v2.11 / TechStack v1.14 / DevTasks v1.13 / ProjectSetup v1.14 / Compliance v1.10 | 主程 |
 | v1.14 | 2026-11-07 | **发行路线调整落契约（对齐 Compliance v1.11 / GDD v2.12 D22）：新增 §4.12 `IAgeVerifyService` + §4.13 `IPlatformService`**：<br>年龄/家长验证走国内通用做法（手机号实名 + 运营商一键登录、客户端直连不自建后端、短信备选），首次启动阻塞流程，`IsMinor` 驱动广告降级；`IPlatformService` 防沉迷/登录桥接，**`IsAntiAddictionEnabled` 本版恒 false、防沉迷后置版号阶段**；此前 `IPlatformService` 仅在 ProjectSetup §11.3 定义、未入契约（“海外路线不适用”理由失效），本版纳入；§4.8 `IAdsService` 注释改未成年人保护口径、AdMobAdsService 因放弃海外划废；§17 Phase 0 接口清单与 header 目标平台行同步；基线串升至 GDD v2.12 / TechStack v1.15 / DevTasks v1.14 / ProjectSetup v1.15 / Compliance v1.11 | 主程 |
 | v1.15 | 2026-11-07 | **敌人种类扩张基线串同步（对齐 GDD v2.13 D23；接口/事件/枚举契约零变更）**：`ZombieType` 仍仅 Normal/Elite/Boss 3 值，`EnemyModifier` 机制叠加层不变；30 种敌人属原型下 species，由 `ZombieSpeciesConfig`（SO：speciesId/原型/骨架引用/数值钩子）数据层承载，Phase 2 随种类名录出表落契约；§15 敌人枚举行与 §15.1 约束重写（SkeletonDataAsset 按种独立 30 份、P1 首批 9 份；atlas page 允许 2048/多页；合批靠同页种类共现编排，DrawCall <30 不变）；基线串升至 GDD v2.13 / TechStack v1.16 / DevTasks v1.15 / ProjectSetup v1.16 / Compliance v1.12；派生文档同步升至 v1.5 | 主程 |
+| v1.16 | 2026-11-07 | **Phase 0 架构骨架落地·§4.6 errata（主程拍板）**：`IRewardCalculator.Calculate` 结果参数类型由 §4.6 原写的 `BattleResult` 更正为 **`BattleState`**（对齐 §17 v1.11「BattleState 为唯一战斗状态真源」，Victory/Defeat/Quit 为其子集，Calculate 于战斗结束调用故取该三值）；未新增 `BattleResult` 枚举，其余接口/事件/枚举契约零变更；本次为真源单点更正，不级联其他文档基线串 | 主程 |
 
 ---
 
